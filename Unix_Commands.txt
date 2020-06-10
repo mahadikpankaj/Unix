@@ -1,0 +1,40 @@
+export GREP_OPTIONS='--color=always'
+export GREP_COLOR='01;32;30'
+
+Color	Foreground	Background
+Black	    30	               40
+Red	    	31	               41
+Green	    32	               42
+Yellow	    33	               43
+Blue	    34	               44
+Magenta	    35	               45
+Cyan	    36	               46
+White	    37	               47
+
+alias grep 'grep --color=always'
+
+
+
+time find /home/twgrsusr/ ! -readable -prune  -o -path '*infrastructure.properties' -print0 | xargs -0 -P8 -n10  grep -iHE 'eq_mifid_user' -A 2 | grep -iE 'password' | sort |  sed -n 's/.*(\(.*\)).*/\1/p' | wc -l
+time find /home/twgrsusr/ ! -readable -prune  -o -path '*infrastructure.properties' -exec grep -iHE 'eq_mifid_user' -A 2 {} \+ | grep -iHE 'password' | sort |  sed -n 's/.*(\(.*\)).*/\1/p' | wc -l
+
+ps -ef| grep -i 'esstitantopology' | grep -i 'worker.port' | sed -n 's/.*worker.port\(.*\).*-D.*/\1/p'
+
+ps -ef| grep -i 'worker.port' | sed -n 's/.*worker.port\(.*\)log/\1/p'
+
+
+ps -ef | grep -iE 'worker.port' | sed -n -e 's/.*storm.id\(.*\).*storm.log.dir.*/\1/gIp'
+
+ps -ef | grep -iE 'worker.port=' | sed -n -e 's/.*storm.id=\(.*\)-.*-.*-Dworker.id=.*worker.port=\(.*\)-Dstorm.log.dir.*/\1 \t\t \2/gip' | sort | uniq | grep -E ^[a-zA-Z]
+
+ps -ef | grep -iE 'worker.port=' | sed -n -e 's/.*storm.id=\(.*\)-.*-.*-Dworker.id=.*worker.port=\(.*\)-Dstorm.log.dir.*/\1 \t\t \2/gip' | sort | uniq | grep -E '^[a-zA-Z]{1,}' | less -iR
+
+
+
+printf '%-50s' `ps -ef | grep -iE 'worker.port=' | sed -n -e 's/.*storm.id=\(.*\)-.*-.*-Dworker.id=.*worker.port=\(.*\)-Dstorm.log.dir.*/\1 \t\t \2/gIp' | sort | uniq | grep -E ^[a-zA-Z]`
+
+echo 'topologyname=ESSTitanTopology worker' | sed -n -e 's/.*topologyname\(.*\)w.*/\1/p'
+
+echo 'jms_out_ess_java_naming_factory_initial=com.solacesystems.jndi.SolJNDIInitialContextFactory' | sed -n 's/\(.*\)=\(.*\)/\1 \2/gip'
+
+find . -name 'infrastructure.properties' | xargs -P 8 -n 10 grep -iHn 'solace' |sed -n 's/\(.*\)=\(.*\)/\1                     \2/gip'
